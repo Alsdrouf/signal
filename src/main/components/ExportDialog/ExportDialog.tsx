@@ -9,7 +9,7 @@ import {
   DialogTitle,
 } from "../../../components/Dialog"
 import { Localized } from "../../../components/Localized"
-import { canExport, exportSongAsWav } from "../../actions"
+import { canExport, exportSongAsJson, exportSongAsWav } from "../../actions"
 import { useStores } from "../../hooks/useStores"
 
 export const ExportDialog: FC = observer(() => {
@@ -24,6 +24,11 @@ export const ExportDialog: FC = observer(() => {
   const onClickExport = useCallback(() => {
     exportStore.openExportDialog = false
     exportSongAsWav(rootStore)()
+  }, [rootStore, exportStore])
+
+  const onClickExportAsJson = useCallback(() => {
+    exportStore.openExportDialog = false
+    exportSongAsJson(rootStore)()
   }, [rootStore, exportStore])
 
   const [exportEnabled, setExportEnabled] = useState(false)
@@ -55,9 +60,14 @@ export const ExportDialog: FC = observer(() => {
           <Localized default="Close">close</Localized>
         </Button>
         {exportEnabled && (
+          <div>
           <PrimaryButton onClick={onClickExport}>
             <Localized default="Export">export</Localized>
           </PrimaryButton>
+            <PrimaryButton onClick={onClickExportAsJson}>
+              <Localized default="Export as json">export</Localized>
+            </PrimaryButton>
+          </div>
         )}
       </DialogActions>
     </Dialog>
